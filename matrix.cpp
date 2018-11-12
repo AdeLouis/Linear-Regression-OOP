@@ -33,6 +33,15 @@ Matrix::Matrix(unsigned r, unsigned c, string file_name)
   }
 }
 
+//copy constructor
+Matrix::Matrix(const Matrix& val)
+{
+  mat = val.mat;
+  N_row = val.N_row;
+  N_col = val.N_col;
+
+}
+
 Matrix Matrix::operator* (const Matrix& mat)
 {
 

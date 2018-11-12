@@ -8,6 +8,8 @@
 
 class Matrix
 {
+
+protected:
   unsigned int N_row;       //number of rows
   unsigned int N_col;       //number of columns
   vector<vector <double> > mat;   //2D vector to represent matrix
@@ -15,6 +17,8 @@ class Matrix
 public:
   //constructor
   Matrix(unsigned int r, unsigned int n, string file_name);
+  Matrix(const Matrix& mat);
+
   //Matrix operations
   Matrix operator* (const Matrix& mat);      //Matrix multiplication
   Matrix dot_multiply_matrix (const Matrix& mat, int col);
