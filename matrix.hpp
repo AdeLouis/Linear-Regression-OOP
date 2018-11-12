@@ -3,6 +3,7 @@
 //Class Project
 
 #include <vector>
+#include <string>
 //using namespace std;
 
 class Matrix
@@ -13,7 +14,7 @@ class Matrix
 
 public:
   //constructor
-  
+  Matrix(unsigned int r, unsigned int n, string file_name);
   //Matrix operations
   Matrix operator* (const Matrix& mat);      //Matrix multiplication
   Matrix dot_multiply_matrix (const Matrix& mat, int col);
@@ -22,7 +23,7 @@ public:
   Matrix add_new_col (Matrix& mat);
 
   //Scaler operations
-  double sum_matix();     //Sums the value in a matrix. Assumes N_col = 1
+  double sum_matrix();     //Sums the value in a matrix. Assumes N_col = 1
 
   //other
   unsigned int get_row() const;        //get number of rows
