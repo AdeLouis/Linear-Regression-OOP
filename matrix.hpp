@@ -17,6 +17,7 @@ protected:
 public:
   //constructor
   Matrix(unsigned int r, unsigned int n, string file_name);
+  Matrix(unsigned int r, unsigned int n);
   Matrix(const Matrix& mat);
 
   //Matrix operations
