@@ -6,13 +6,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
-using namespace std;
+using std::vector;
+using std::cout;
 
 //constructor - add error handlin gi file does not exist
 Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
 {
-  ifstream input_file;
+  std::ifstream input_file;
   input_file.open(file_name);
 
   if(input_file.is_open())
@@ -32,6 +34,7 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
       //while(getline(input_file, )
     }
   }
+  input_file.close();
 }
 
 Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> > m): N_row(r), N_col(c), mat(m)
@@ -110,9 +113,12 @@ Matrix Matrix::dot_squared()
 }
 
 //adds a new column to our matrix
-Matrix Matrix::add_new_col(Matrix& mat)
+void Matrix::add_new_col(int val)
 {
-
+  for (unsigned int i = 0; i < N_row; i++)
+  {
+    mat[i].insert(mat[i].begin(), val);
+  }
 }
 
 //Sums up all the values in a columns. Assumes N_col is one

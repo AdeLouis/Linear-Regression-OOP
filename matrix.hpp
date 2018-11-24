@@ -4,7 +4,9 @@
 
 #include <vector>
 #include <string>
-using namespace std;
+using std::vector;
+using std::string;
+
 
 class Matrix
 {
@@ -28,7 +30,7 @@ public:
   Matrix dot_multiply_matrix (const Matrix& mat, int col);
   Matrix operator- (const vector<vector<double> >& val);      //Matrix subtraction
   Matrix dot_squared();                  //Squares each element in the matrix
-  Matrix add_new_col (Matrix& mat);
+  void add_new_col (int val);  //at the beginning
 
   //Scaler operations
   double sum_matrix();     //Sums the value in a matrix. Assumes N_col = 1
