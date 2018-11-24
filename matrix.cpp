@@ -33,9 +33,16 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
   }
 }
 
-Matrix::Matrix(unsigned int r, unsigned int c, vector m): N_row(r), N_col(c)
+Matrix::Matrix(unsigned int r, unsigned int c, int m): N_row(r), N_col(c)
 {
-  mat = m;
+  for (unsigned i = 0; i < N_row; i++)
+  {
+    for(unsigned j = 0; j < N_col; j++)
+    {
+      mat[i][j] = m;
+    }
+    //while(getline(input_file, )
+  }
 }
 
 //copy constructor
@@ -49,14 +56,20 @@ Matrix::Matrix(const Matrix& val)
 //Matrix multiplication - add error handling for mismatch dimension
 Matrix Matrix::operator* (const Matrix& val)
 {
-  unsigned int r_tmp = N_row;
-  unsigned int n_tmp = val.N_col;
+  unsigned int new_row = N_row;
+  unsigned int new_col = val.get_column;
 
-  vector<vector <double> > temp;
+  Matrix result(new_row, new_col, 1);
   //add caluclation here
-
-
-  return Matirx(r,c,temp);
+  for (unsigned i = 0; i < N_row; i++)
+  {
+    for(unsigned j = 0; j < val.get_column; j++)
+    {
+      for(unsigned k = 0; k < val.get_row; k++)
+      {
+        result[i][j] += mat[i][k] * val[k][j];
+      }
+    }
 }
 
 Matrix Matrix::dor_multiply_matrix(const Matrix& mat, int col)
