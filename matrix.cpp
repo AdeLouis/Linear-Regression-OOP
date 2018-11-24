@@ -34,7 +34,7 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
   }
 }
 
-Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<int> > m): N_row(r), N_col(c), mat(m)
+Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> > m): N_row(r), N_col(c), mat(m)
 {}
 
 //copy constructor
@@ -46,13 +46,13 @@ Matrix::Matrix(const Matrix& val)
 }
 
 //Matrix multiplication - add error handling for mismatch dimension
-Matrix Matrix::operator* (const vector<vector<int> >& val)
+Matrix Matrix::operator* (const vector<vector<double> >& val)
 {
   unsigned int new_row = N_row;
   unsigned int new_col = val[0].size();
 
   //Matrix result(new_row, new_col, 1);
-  vector<vector<int> > result(new_row, vector<int>(new_col));
+  vector<vector<double> > result(new_row, vector<double>(new_col));
   //add caluclation here
   for (unsigned int i = 0; i < N_row; i++)
   {
@@ -77,17 +77,38 @@ Matrix Matrix::dot_multiply_matrix(const Matrix& mat, int col)
 
 }
 
-//Matrix subtraction
-Matrix Matrix::operator- (const Matrix& mat)
+//Matrix subtraction - add error handling
+Matrix Matrix::operator- (const vector<vector<double> >& val)
 {
+  unsigned int new_row = N_row;
+  unsigned int new_col = N_col;
 
+  vector<vector<double> > result(new_row, vector<double>(new_col));
+
+  for (unsigned int i = 0; i < new_row; i++)
+  {
+    for(unsigned int j = 0; j < new_col; j++)
+    {
+      result[i][j] = this->mat[i][j] - val[i][j];
+    }
+  }
+  return Matrix(new_row, new_col, result);
 }
 
 //Squares each element in the matrix
 Matrix Matrix::dot_squared()
 {
-
+  vector<vector<double> > result(N_row, vector<double>(N_col));
+  for (unsigned int i = 0; i < N_row; i++)
+  {
+    for(unsigned int j = 0; j < N_col; j++)
+    {
+      result[i][j] = this->mat[i][j] * this->mat[i][j];
+    }
+  }
+  return Matrix(N_row, N_col, result);
 }
+
 //adds a new column to our matrix
 Matrix Matrix::add_new_col(Matrix& mat)
 {
@@ -110,4 +131,9 @@ unsigned int Matrix::get_row() const
 unsigned int Matrix::get_column() const
 {
   return N_col;
+}
+
+vector<vector<double> > Matrix::get_vector() const
+{
+  return mat;
 }
