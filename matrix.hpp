@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-//using namespace std;
+using namespace std;
 
 class Matrix
 {
@@ -12,16 +12,19 @@ class Matrix
 protected:
   unsigned int N_row;       //number of rows
   unsigned int N_col;       //number of columns
-  vector<vector <double> > mat;   //2D vector to represent matrix
+  vector<vector<int> > mat;   //2D vector to represent matrix
+
 
 public:
   //constructor
   Matrix(unsigned int r, unsigned int n, string file_name);
-  Matrix(unsigned int r, unsigned int n, int default);
+  Matrix(unsigned int r, unsigned int n, vector<vector<int> > def);
+  //Matrix(unsigned int r, unsigned int n, int m);
   Matrix(const Matrix& mat);
 
   //Matrix operations
-  Matrix operator* (const Matrix& mat);      //Matrix multiplication
+  Matrix operator* (const vector<vector<int> >& val);
+  int operator() (const unsigned int r, const unsigned int c);
   Matrix dot_multiply_matrix (const Matrix& mat, int col);
   Matrix operator- (const Matrix& mat);      //Matrix subtraction
   Matrix dot_squared();                  //Squares each element in the matrix

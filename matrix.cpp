@@ -5,6 +5,7 @@
 #include "matrix.hpp"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -33,46 +34,45 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
   }
 }
 
-Matrix::Matrix(unsigned int r, unsigned int c, int m): N_row(r), N_col(c)
-{
-  for (unsigned i = 0; i < N_row; i++)
-  {
-    for(unsigned j = 0; j < N_col; j++)
-    {
-      mat[i][j] = m;
-    }
-    //while(getline(input_file, )
-  }
-}
+Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<int> > m): N_row(r), N_col(c), mat(m)
+{}
 
 //copy constructor
 Matrix::Matrix(const Matrix& val)
 {
-  mat = val.mat;
+  this->mat = val.mat;
   N_row = val.N_row;
   N_col = val.N_col;
 }
 
 //Matrix multiplication - add error handling for mismatch dimension
-Matrix Matrix::operator* (const Matrix& val)
+Matrix Matrix::operator* (const vector<vector<int> >& val)
 {
   unsigned int new_row = N_row;
-  unsigned int new_col = val.get_column;
+  unsigned int new_col = val[0].size();
 
-  Matrix result(new_row, new_col, 1);
+  //Matrix result(new_row, new_col, 1);
+  vector<vector<int> > result(new_row, vector<int>(new_col));
   //add caluclation here
-  for (unsigned i = 0; i < N_row; i++)
+  for (unsigned int i = 0; i < N_row; i++)
   {
-    for(unsigned j = 0; j < val.get_column; j++)
+    for(unsigned int j = 0; j < val[0].size(); j++)
     {
-      for(unsigned k = 0; k < val.get_row; k++)
+      for(unsigned int k = 0; k < val.size(); k++)
       {
-        result[i][j] += mat[i][k] * val[k][j];
+        result[i][j] += this-> mat[i][k] * val[k][j];
       }
     }
+  }
+  return Matrix(new_row, new_col, result);
 }
 
-Matrix Matrix::dor_multiply_matrix(const Matrix& mat, int col)
+int Matrix::operator()(const unsigned int r, const unsigned int c)
+{
+  return mat[r][c];
+}
+
+Matrix Matrix::dot_multiply_matrix(const Matrix& mat, int col)
 {
 
 }
@@ -84,7 +84,7 @@ Matrix Matrix::operator- (const Matrix& mat)
 }
 
 //Squares each element in the matrix
-Matrix Matrix::dot_squared();
+Matrix Matrix::dot_squared()
 {
 
 }
