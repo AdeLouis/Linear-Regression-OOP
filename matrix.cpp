@@ -10,12 +10,12 @@
 
 using std::vector;
 using std::cout;
+using std::endl;
 
+//Constructors
 Matrix::Matrix(): N_row(1), N_col(1)
-{
-  //mat = 1;
-}
-//constructor - add error handlin gi file does not exist
+{}
+
 Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
 {
   std::ifstream input_file;
@@ -32,7 +32,7 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
     {
       for(unsigned j = 0; j < N_col; j++)
       {
-        input_file >> mat[i][j];
+        input_file >> data[i][j];
         input_file.get();
       }
       //while(getline(input_file, )
@@ -41,101 +41,113 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
   input_file.close();
 }
 
-Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> >& m): N_row(r), N_col(c), mat(m)
-{
-  //cout<<mat[0][0]<<" "<<mat[0][1]<<std::endl;
-}
+Matrix::Matrix(unsigned int r, unsigned int c, vector<double>& m): N_row(r), N_col(c), data_1D(m)
+{}
 
-//copy constructor
+Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> >& m):N_row(r), N_col(c), data(m)
+{}
+
 Matrix::Matrix(const Matrix& val)
 {
-  this->mat = val.mat;
+  this->data = val.data;
+  this->data_1D = val.data_1D;
   N_row = val.N_row;
   N_col = val.N_col;
 }
 
-//Matrix multiplication - add error handling for mismatch dimension
-Matrix Matrix::operator* (const vector<vector<double> >& val)
+Matrix Matrix::operator* (const vector<double>& val)
 {
   unsigned int new_row = N_row;
-  unsigned int new_col = val[0].size();
+  unsigned int new_col = 1;
 
   //cout <<"["<<val[0][1]<<" "<<val[1][1]<<" "<<val[2][1]<<std::endl;
   //Matrix result(new_row, new_col, 1);
-  vector<vector<double> > result(new_row, vector<double>(new_col));
+  vector<double> result;
+  result.resize(new_row);
   //cout<<"row is "<<result.size()<<" col is "<<result[1].size()<<std::endl;
-  
+
   for (unsigned int i = 0; i < N_row; i++)
   {
-    for(unsigned int j = 0; j < val[0].size(); j++)
+    for(unsigned int j = 0; j < N_col; j++)
     {
-      for(unsigned int k = 0; k < val.size(); k++)
-      {
-        result[i][j] += this-> mat[i][k] * val[k][j];
-      }
+        result[i] += this-> data[i][j] * val[j];
     }
+  }
+  return Matrix(new_row, new_col, result);
+}
+
+Matrix Matrix::operator- (const Matrix& val)
+{
+  unsigned int new_row = N_row;
+  unsigned int new_col = N_col;
+
+  vector<double> result;
+  result.resize(new_row);
+
+  for (unsigned int i = 0; i < new_row; i++)
+  {
+      result[i] = this->data_1D[i] - val.data_1D[i];
+  }
+  return Matrix(new_row, new_col, result);
+}
+
+Matrix Matrix::operator- (const vector<double>& val)
+{
+  unsigned int new_row = N_row;
+  unsigned int new_col = N_col;
+
+  vector<double> result;
+  result.resize(new_row);
+
+  for (unsigned int i = 0; i < new_row; i++)
+  {
+      result[i] = this->data_1D[i] - val[i];
   }
   return Matrix(new_row, new_col, result);
 }
 
 double Matrix::operator()(const unsigned int r, const unsigned int c)
 {
-  return this->mat[r][c];
+  return this->data[r][c];
 }
 
-Matrix Matrix::dot_multiply_matrix(const Matrix& mat, int col)
-{
-
-}
-
-//Matrix subtraction - add error handling
-Matrix Matrix::operator- (const vector<vector<double> >& val)
+Matrix Matrix::dot_multiply(const Matrix& val)
 {
   unsigned int new_row = N_row;
-  unsigned int new_col = N_col;
+  unsigned int new_col = 1;
 
-  vector<vector<double> > result(new_row, vector<double>(new_col));
+  vector<double> result;
+  result.resize(new_row);
 
   for (unsigned int i = 0; i < new_row; i++)
   {
-    for(unsigned int j = 0; j < new_col; j++)
-    {
-      result[i][j] = this->mat[i][j] - val[i][j];
-    }
+      result[i] = this->data_1D[i] * val.data_1D[i];
   }
   return Matrix(new_row, new_col, result);
 }
 
-//Squares each element in the matrix
 Matrix Matrix::dot_squared()
 {
-  vector<vector<double> > result(N_row, vector<double>(N_col));
+  vector<double> result;
+  result.resize(N_row);
+
   for (unsigned int i = 0; i < N_row; i++)
   {
-    for(unsigned int j = 0; j < N_col; j++)
-    {
-      result[i][j] = this->mat[i][j] * this->mat[i][j];
-    }
+      result[i] = this->data_1D[i] * this->data_1D[i];
   }
   return Matrix(N_row, N_col, result);
 }
 
-//adds a new column to our matrix
-void Matrix::add_new_col(int val)
+Matrix Matrix::add_new_col(int val)
 {
+  /*
   for (unsigned int i = 0; i < N_row; i++)
   {
-    mat[i].insert(mat[i].begin(), val);
+    data_1D.insert(mat[i].begin(), val);
   }
+  */
 }
 
-//Sums up all the values in a columns. Assumes N_col is one. Add error handlig
-double Matrix::sum_matrix()
-{
-
-}
-
-//gets number of rows in matrix
 unsigned int Matrix::get_row() const
 {
   return N_row;
@@ -147,7 +159,7 @@ unsigned int Matrix::get_column() const
   return N_col;
 }
 
-vector<vector<double> > Matrix::get_vector() const
+double Matrix::sum_matrix()
 {
-  return mat;
+
 }
