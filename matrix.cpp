@@ -11,6 +11,10 @@
 using std::vector;
 using std::cout;
 
+Matrix::Matrix(): N_row(1), N_col(1)
+{
+  //mat = 1;
+}
 //constructor - add error handlin gi file does not exist
 Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
 {
@@ -37,8 +41,10 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
   input_file.close();
 }
 
-Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> > m): N_row(r), N_col(c), mat(m)
-{}
+Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> >& m): N_row(r), N_col(c), mat(m)
+{
+  //cout<<mat[0][0]<<" "<<mat[0][1]<<std::endl;
+}
 
 //copy constructor
 Matrix::Matrix(const Matrix& val)
@@ -54,9 +60,11 @@ Matrix Matrix::operator* (const vector<vector<double> >& val)
   unsigned int new_row = N_row;
   unsigned int new_col = val[0].size();
 
+  //cout <<"["<<val[0][1]<<" "<<val[1][1]<<" "<<val[2][1]<<std::endl;
   //Matrix result(new_row, new_col, 1);
   vector<vector<double> > result(new_row, vector<double>(new_col));
-  //add caluclation here
+  //cout<<"row is "<<result.size()<<" col is "<<result[1].size()<<std::endl;
+  
   for (unsigned int i = 0; i < N_row; i++)
   {
     for(unsigned int j = 0; j < val[0].size(); j++)
@@ -70,9 +78,9 @@ Matrix Matrix::operator* (const vector<vector<double> >& val)
   return Matrix(new_row, new_col, result);
 }
 
-int Matrix::operator()(const unsigned int r, const unsigned int c)
+double Matrix::operator()(const unsigned int r, const unsigned int c)
 {
-  return mat[r][c];
+  return this->mat[r][c];
 }
 
 Matrix Matrix::dot_multiply_matrix(const Matrix& mat, int col)
@@ -121,7 +129,7 @@ void Matrix::add_new_col(int val)
   }
 }
 
-//Sums up all the values in a columns. Assumes N_col is one
+//Sums up all the values in a columns. Assumes N_col is one. Add error handlig
 double Matrix::sum_matrix()
 {
 
