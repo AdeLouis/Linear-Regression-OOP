@@ -33,7 +33,7 @@ public:
   Matrix dot_multiply(const Matrix& mat);
   Matrix dot_squared();
 
-  Matrix add_new_col (int val);
+  Matrix add_new_col();
   unsigned int get_row() const;        //get number of rows
   unsigned int get_column() const;    //get number of columns
   double sum_matrix();     //Sums the value in a matrix. Assumes N_col

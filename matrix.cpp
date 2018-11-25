@@ -45,7 +45,9 @@ Matrix::Matrix(unsigned int r, unsigned int c, vector<double>& m): N_row(r), N_c
 {}
 
 Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> >& m):N_row(r), N_col(c), data(m)
-{}
+{
+  cout<<"i go there"<<endl;
+}
 
 Matrix::Matrix(const Matrix& val)
 {
@@ -138,14 +140,24 @@ Matrix Matrix::dot_squared()
   return Matrix(N_row, N_col, result);
 }
 
-Matrix Matrix::add_new_col(int val)
+Matrix Matrix::add_new_col()
 {
-  /*
+  unsigned int row = N_row;
+  vector<double> ones;
+  vector<vector<double> > result;
+  //(N_row, vector<double>(N_col + 1));
+
   for (unsigned int i = 0; i < N_row; i++)
   {
-    data_1D.insert(mat[i].begin(), val);
+    ones.push_back(1.0);
+    ones.push_back(this->data_1D[i]);
+    result.push_back(ones);
+    ones.clear();
   }
-  */
+
+  cout<<result.size();
+  cout<<result[0].size()<<endl;
+  return Matrix(row,2,result);
 }
 
 unsigned int Matrix::get_row() const
@@ -161,5 +173,10 @@ unsigned int Matrix::get_column() const
 
 double Matrix::sum_matrix()
 {
-
+  double result;
+  for(unsigned int i = 0; i < N_row; i++)
+  {
+    result += this->data_1D[i];
+  }
+  return result;
 }
