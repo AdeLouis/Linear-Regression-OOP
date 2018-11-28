@@ -47,8 +47,6 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
     input_file.close();
 }
 
-
-
 Matrix::Matrix(unsigned int r, unsigned int c, vector<double>& m): N_row(r), N_col(c), data_1D(m)
 {}
 
@@ -119,6 +117,11 @@ double Matrix::operator()(const unsigned int r, const unsigned int c)
   return this->data[r][c];
 }
 
+double Matrix::operator()(const unsigned int r)
+{
+  return this->data_1D[r];
+}
+
 Matrix Matrix::dot_multiply(const Matrix& val)
 {
   unsigned int new_row = N_row;
@@ -146,7 +149,7 @@ Matrix Matrix::dot_squared()
   return Matrix(N_row, N_col, result);
 }
 
-Matrix Matrix::add_new_col()
+Matrix Matrix::add_new_col(vector<double>& val)
 {
   unsigned int row = N_row;
   vector<double> ones;
@@ -155,7 +158,8 @@ Matrix Matrix::add_new_col()
   for (unsigned int i = 0; i < N_row; i++)
   {
     ones.push_back(1.0);
-    ones.push_back(this->data_1D[i]);
+    ones.push_back(val[i]);
+    //.push_back(this->data_1D[i]);
     result.push_back(ones);
     ones.clear();
   }
@@ -180,5 +184,6 @@ double Matrix::sum_matrix()
   {
     result += this->data_1D[i];
   }
+
   return result;
 }

@@ -33,12 +33,13 @@ public:
   Matrix operator- (const vector<double>& data);
   Matrix operator- (const Matrix& data);
   double operator() (const unsigned int r, const unsigned int c);
+  double operator() (const unsigned int r);
   Matrix dot_multiply(const Matrix& mat);
   Matrix dot_squared();
 
-  Matrix add_new_col();
-  virtual unsigned int get_row() const;        //get number of rows
-  virtual unsigned int get_column() const;    //get number of columns
+  Matrix add_new_col(vector<double>& val);
+  unsigned int get_row() const;        //get number of rows
+  unsigned int get_column() const;    //get number of columns
   double sum_matrix();     //Sums the value in a matrix. Assumes N_col
 };
 

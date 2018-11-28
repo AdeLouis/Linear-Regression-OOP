@@ -22,9 +22,7 @@ class Lin_reg: public Matrix
 
 public:
   Lin_reg(unsigned int r, unsigned int n, string file_name);
-  unsigned int get_row() const;
-  unsigned int get_column() const;
-  double get_data(unsigned int a, unsigned int b);
+  //double get_data(unsigned int a, unsigned int b);
   int length();
   vector<double> multiply(Matrix& x, vector<double> val);
 
