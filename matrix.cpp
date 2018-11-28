@@ -5,6 +5,7 @@
 #include "matrix.hpp"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -18,36 +19,41 @@ Matrix::Matrix(): N_row(1), N_col(1)
 
 Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
 {
+  vector<vector<double> > temp(r,vector<double>(c));
+
   std::ifstream input_file;
   input_file.open(file_name);
 
+  int i = 0;
+  string line, mystring;
   if(input_file.is_open())
   {
     N_row = r;
     N_col = c;
 
-    //int num_of_data_points = r * c;
-    //mat.resize(r);
-    for (unsigned i = 0; i < N_row; i++)
-    {
-      for(unsigned j = 0; j < N_col; j++)
-      {
-        input_file >> data[i][j];
-        input_file.get();
-      }
-      //while(getline(input_file, )
+        while(getline(input_file,line))
+        {
+          std::stringstream ss(line);
+          getline(ss,mystring, ',');
+          temp[i][0] = stod(mystring);
+
+          getline(ss, mystring, ',');
+          temp[i][1] = stod(mystring);
+          i = i+1;
+        }
+
     }
-  }
-  input_file.close();
+    this->data = temp;
+    input_file.close();
 }
+
+
 
 Matrix::Matrix(unsigned int r, unsigned int c, vector<double>& m): N_row(r), N_col(c), data_1D(m)
 {}
 
 Matrix::Matrix(unsigned int r, unsigned int c, vector<vector<double> >& m):N_row(r), N_col(c), data(m)
-{
-  cout<<"i go there"<<endl;
-}
+{}
 
 Matrix::Matrix(const Matrix& val)
 {
@@ -145,7 +151,6 @@ Matrix Matrix::add_new_col()
   unsigned int row = N_row;
   vector<double> ones;
   vector<vector<double> > result;
-  //(N_row, vector<double>(N_col + 1));
 
   for (unsigned int i = 0; i < N_row; i++)
   {
@@ -154,9 +159,6 @@ Matrix Matrix::add_new_col()
     result.push_back(ones);
     ones.clear();
   }
-
-  cout<<result.size();
-  cout<<result[0].size()<<endl;
   return Matrix(row,2,result);
 }
 
