@@ -2,6 +2,9 @@
 //Class: Object Oriented Programming
 //Class Project
 
+#ifndef _MATRIX_HPP_
+#define _MATRIX_HPP_
+
 #include <vector>
 #include <string>
 using std::vector;
@@ -26,7 +29,7 @@ public:
   //Matrix(unsigned int r, unsigned int n, int m);
   Matrix(const Matrix& mat);
 
-  Matrix operator* (const vector<double>& data);
+  vector<double> operator* (const vector<double>& data);
   Matrix operator- (const vector<double>& data);
   Matrix operator- (const Matrix& data);
   double operator() (const unsigned int r, const unsigned int c);
@@ -34,7 +37,9 @@ public:
   Matrix dot_squared();
 
   Matrix add_new_col();
-  unsigned int get_row() const;        //get number of rows
-  unsigned int get_column() const;    //get number of columns
+  virtual unsigned int get_row() const;        //get number of rows
+  virtual unsigned int get_column() const;    //get number of columns
   double sum_matrix();     //Sums the value in a matrix. Assumes N_col
 };
+
+#endif

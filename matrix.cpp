@@ -63,7 +63,7 @@ Matrix::Matrix(const Matrix& val)
   N_col = val.N_col;
 }
 
-Matrix Matrix::operator* (const vector<double>& val)
+vector<double> Matrix::operator* (const vector<double>& val)
 {
   unsigned int new_row = N_row;
   unsigned int new_col = 1;
@@ -81,7 +81,7 @@ Matrix Matrix::operator* (const vector<double>& val)
         result[i] += this-> data[i][j] * val[j];
     }
   }
-  return Matrix(new_row, new_col, result);
+  return result;
 }
 
 Matrix Matrix::operator- (const Matrix& val)
