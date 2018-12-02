@@ -122,7 +122,7 @@ double Matrix::operator()(const unsigned int r)
   return this->data_1D[r];
 }
 
-Matrix Matrix::dot_multiply(const Matrix& val)
+Matrix Matrix::dot_multiply(const vector<double>& val)
 {
   unsigned int new_row = N_row;
   unsigned int new_col = 1;
@@ -132,7 +132,7 @@ Matrix Matrix::dot_multiply(const Matrix& val)
 
   for (unsigned int i = 0; i < new_row; i++)
   {
-      result[i] = this->data_1D[i] * val.data_1D[i];
+      result[i] = this->data_1D[i] * val[i];
   }
   return Matrix(new_row, new_col, result);
 }
@@ -177,6 +177,18 @@ unsigned int Matrix::get_column() const
   return N_col;
 }
 
+Matrix Matrix::subtract(vector<double> a, vector<double> b)
+{
+
+  vector<double> result;
+  result.resize(a.size());
+
+  for (unsigned int i = 0; i < a.size(); i++)
+  {
+      result[i] = a[i] - b[i];
+  }
+  return Matrix(a.size(),1,result);
+}
 double Matrix::sum_matrix()
 {
   double result;

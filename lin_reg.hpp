@@ -28,7 +28,7 @@ public:
 
   //linear regression core
   double computeCost(vector<double> theta);
-  double gradientDescent(vector<double> theta, int iterations, double alpha);
+  vector<double> gradientDescent(vector<double> theta_x, int iterations, double alpha);
   double predict (double val);
 };
 

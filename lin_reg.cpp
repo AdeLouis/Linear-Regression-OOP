@@ -7,6 +7,9 @@
 #include <string>
 #include <vector>
 
+using std::cout;
+using std::endl;
+
 Lin_reg::Lin_reg(unsigned int r, unsigned int n, string file_name): Matrix(r,n,file_name)
 {
   unsigned int num_row = r;
@@ -22,12 +25,7 @@ Lin_reg::Lin_reg(unsigned int r, unsigned int n, string file_name): Matrix(r,n,f
   X_train = temp;
   y_train = temp2;
 }
-/*
-double Lin_reg::get_data(unsigned int a, unsigned int b)
-{
-  return Matrix::data[a][b];
-}
-*/
+
 int Lin_reg::length()
 {
   return X_train.size();
@@ -35,17 +33,14 @@ int Lin_reg::length()
 
 vector<double> Lin_reg::multiply(Matrix &x, vector<double> val)
 {
-   vector<double> a = x*val;
-   //std::cout<<a.size()<<std::endl;
-   //std::cout<<a[0]<<" "<<a[1]<<" "<<a[96]<<std::endl;
-   return a;
+   return x*val;
 }
 
 double Lin_reg::computeCost(vector<double> val)
 {
   int m;
   vector<double> h;
-  Matrix error,square_error;
+  Matrix square_error;
   m = length();
 
   Matrix X_new ;//= x.add_new_col();
@@ -53,17 +48,44 @@ double Lin_reg::computeCost(vector<double> val)
 
   h = multiply(X_new, val);
   Matrix h_new(m,1,h);
-  error = (h_new - y_train).dot_squared();
+  square_error = (h_new - y_train).dot_squared();
 
-  return (1.0 / (2.0*m)) * error.sum_matrix();;
+  return (1.0 / (2.0*m)) * square_error.sum_matrix();
 }
 
-double gradientDescent(vector<double> theta, int iterations, double alpha)
+vector<double> Lin_reg::gradientDescent(vector<double> theta_x, int num_iterations, double alpha)
 {
+  int m;
+  int i = 0;
+  m = length();
+  double temp, temp1;
+  vector<double> h;
+  vector<double> x (N_row,1);
 
+  Matrix X_new,temp2,temp3;
+  X_new = add_new_col(X_train);
+
+  while (i < num_iterations)
+  {
+    h = multiply(X_new, theta_x);
+    Matrix error(subtract(h,y_train));
+    temp2 = error.dot_multiply(x);
+    temp3 = error.dot_multiply(X_train);
+
+    temp = theta_x[0] - ((alpha * (1.0/ m)) * (temp2.sum_matrix()));
+    temp1 = theta_x[1] - ((alpha * (1.0/ m)) * (temp3.sum_matrix()));
+
+    theta_x[0] = temp;
+    theta_x[1] = temp1;
+    i++;
+  }
+  theta = theta_x;
+  cout<<"here"<<endl;
+  return theta_x;
 }
 
-double predict (double val)
+double Lin_reg::predict(double num)
 {
-
+  vector<double> val{1.0,num};
+  return (val[0]*theta[0] + val[1]*theta[1]);
 }
