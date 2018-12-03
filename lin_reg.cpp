@@ -59,7 +59,6 @@ vector<double> Lin_reg::gradientDescent(vector<double> theta_x, int num_iteratio
   int m;
   int i = 0;
   m = length();
-  double temp, temp1;
   vector<double> h;
   vector<double> x (N_row,1);
 

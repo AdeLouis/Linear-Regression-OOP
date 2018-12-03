@@ -3,6 +3,7 @@
 //Class Project
 
 #include "matrix.hpp"
+//#include "errors.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -24,25 +25,32 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
   std::ifstream input_file;
   input_file.open(file_name);
 
-  int i = 0;
-  string line, mystring;
   if(input_file.is_open())
   {
-    N_row = r;
-    N_col = c;
+    int i = 0;
+    string line, mystring;
+    if(input_file.is_open())
+    {
+      N_row = r;
+      N_col = c;
 
-        while(getline(input_file,line))
-        {
-          std::stringstream ss(line);
-          for(int k = 0; k < c; k++)
+          while(getline(input_file,line))
           {
-            getline(ss,mystring, ',');
-            temp[i][k] = stod(mystring);
+            std::stringstream ss(line);
+            for(unsigned int k = 0; k < c; k++)
+            {
+              getline(ss,mystring, ',');
+              temp[i][k] = stod(mystring);
+            }
+            i = i+1;
           }
-          i = i+1;
-        }
-
+      }
     }
+    else
+    {
+      throw "File does not exist";
+    }
+
     this->data = temp;
     input_file.close();
 }
@@ -64,13 +72,10 @@ Matrix::Matrix(const Matrix& val)
 vector<double> Matrix::operator* (const vector<double>& val)
 {
   unsigned int new_row = N_row;
-  unsigned int new_col = 1;
 
-  //cout <<"["<<val[0][1]<<" "<<val[1][1]<<" "<<val[2][1]<<std::endl;
-  //Matrix result(new_row, new_col, 1);
+
   vector<double> result;
   result.resize(new_row);
-  //cout<<"row is "<<result.size()<<" col is "<<result[1].size()<<std::endl;
 
   for (unsigned int i = 0; i < N_row; i++)
   {
