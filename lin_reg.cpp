@@ -10,16 +10,17 @@
 using std::cout;
 using std::endl;
 
-Lin_reg::Lin_reg(unsigned int r, unsigned int n, string file_name): Matrix(r,n,file_name)
+Lin_reg::Lin_reg(unsigned int row, unsigned int col, string file_name): Matrix(row,col,file_name)
 {
-  unsigned int num_row = r;
-  vector<double> temp(num_row,0);
-  vector<double> temp2(num_row,0);
 
-  for (unsigned int i = 0; i < num_row; i++)
+  vector<vector<double> > temp(row,vector<double>(col-1));
+  vector<double> temp2(row,0);
+
+  for (unsigned int i = 0; i < row; i++)
   {
-    temp[i] = data[i][0];
-    temp2[i] = data[i][1];
+    for(unsigned int j = 0; j < col-1; j++)
+      temp[i][j] = data[i][j];
+    temp2[i] = data[i][col-1];
   }
 
   X_train = temp;
@@ -69,16 +70,19 @@ vector<double> Lin_reg::gradientDescent(vector<double> theta_x, int num_iteratio
   {
     h = multiply(X_new, theta_x);
     Matrix error(subtract(h,y_train));
-    temp2 = error.dot_multiply(x);
-    temp3 = error.dot_multiply(X_train);
 
-    temp = theta_x[0] - ((alpha * (1.0/ m)) * (temp2.sum_matrix()));
-    temp1 = theta_x[1] - ((alpha * (1.0/ m)) * (temp3.sum_matrix()));
+    //temp2 = error.dot_multiply(x);
+    //theta_x[0] = theta_x[0] - ((alpha * (1.0/ m)) * (temp2.sum_matrix()));
 
-    theta_x[0] = temp;
-    theta_x[1] = temp1;
+    for(unsigned int j = 0; j < X_new.get_column(); j++)
+    {
+      temp3 = error.dot_multiply(X_new.get_data(),j);
+      theta_x[j] = theta_x[j] - ((alpha * (1.0/ m)) * (temp3.sum_matrix()));
+    }
+
     i++;
   }
+
   theta = theta_x;
   cout<<"here"<<endl;
   return theta_x;

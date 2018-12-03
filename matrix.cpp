@@ -34,11 +34,11 @@ Matrix::Matrix(unsigned int r, unsigned int c, string file_name)
         while(getline(input_file,line))
         {
           std::stringstream ss(line);
-          getline(ss,mystring, ',');
-          temp[i][0] = stod(mystring);
-
-          getline(ss, mystring, ',');
-          temp[i][1] = stod(mystring);
+          for(int k = 0; k < c; k++)
+          {
+            getline(ss,mystring, ',');
+            temp[i][k] = stod(mystring);
+          }
           i = i+1;
         }
 
@@ -122,7 +122,7 @@ double Matrix::operator()(const unsigned int r)
   return this->data_1D[r];
 }
 
-Matrix Matrix::dot_multiply(const vector<double>& val)
+Matrix Matrix::dot_multiply(const vector<vector<double> >& val, int col_num)
 {
   unsigned int new_row = N_row;
   unsigned int new_col = 1;
@@ -132,7 +132,7 @@ Matrix Matrix::dot_multiply(const vector<double>& val)
 
   for (unsigned int i = 0; i < new_row; i++)
   {
-      result[i] = this->data_1D[i] * val[i];
+      result[i] = this->data_1D[i] * val[i][col_num];
   }
   return Matrix(new_row, new_col, result);
 }
@@ -149,21 +149,21 @@ Matrix Matrix::dot_squared()
   return Matrix(N_row, N_col, result);
 }
 
-Matrix Matrix::add_new_col(vector<double>& val)
+Matrix Matrix::add_new_col(vector<vector<double> >& val)
 {
-  unsigned int row = N_row;
   vector<double> ones;
   vector<vector<double> > result;
 
   for (unsigned int i = 0; i < N_row; i++)
   {
     ones.push_back(1.0);
-    ones.push_back(val[i]);
-    //.push_back(this->data_1D[i]);
+    for (unsigned int j = 0; j < N_col; j++)
+      ones.push_back(val[i][j]);
+
     result.push_back(ones);
     ones.clear();
   }
-  return Matrix(row,2,result);
+  return Matrix(N_row,2,result);
 }
 
 unsigned int Matrix::get_row() const
@@ -171,6 +171,10 @@ unsigned int Matrix::get_row() const
   return N_row;
 }
 
+vector<vector<double> > Matrix::get_data() const
+{
+  return data;
+}
 //gets number of columns in matrix
 unsigned int Matrix::get_column() const
 {
@@ -189,6 +193,7 @@ Matrix Matrix::subtract(vector<double> a, vector<double> b)
   }
   return Matrix(a.size(),1,result);
 }
+
 double Matrix::sum_matrix()
 {
   double result;
